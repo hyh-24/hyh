@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<!--
+  作者：黄煜涵
+  建立时间：2026-11-04
+  使用大模型：DeepSeek-V4.1-Flash
+  功能名称：影视排行榜选项卡
+-->
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>影视排行榜 · 每周/每日/每月/全部</title>
+    <style>
+        /* 黄煜涵：页面基础样式 */
+        body {
+            margin: 0;
+            padding: 24px;
+            background: #ffffff;
+            font-family: "Microsoft YaHei", "PingFang SC", sans-serif;
+            color: #333333;
+        }
+
+        /* 黄煜涵：整块排行榜组件，宽度与参考图一致 */
+        .hyh_rank_box {
+            width: 380px;
+        }
+
+        /* 黄煜涵：选项卡条，四个等宽按钮紧贴排列，底部带一条灰色横条 */
+        .hyh_rank_tabs {
+            display: flex;
+            border-bottom: 4px solid #8c8c8c;
+        }
+
+        .hyh_rank_tab {
+            flex: 1 1 0;
+            height: 34px;
+            margin-right: 2px;
+            padding: 0;
+            color: #333333;
+            background: #e4e4e4;
+            border: 0;
+            font-family: inherit;
+            font-size: 14px;
+            line-height: 34px;
+            cursor: pointer;
+        }
+
+        .hyh_rank_tab:last-child { margin-right: 0; }
+
+        /* 黄煜涵：当前选中的选项卡为深灰色底、白色文字 */
+        .hyh_rank_tab.hyh_is_active {
+            color: #ffffff;
+            background: #8c8c8c;
+        }
+
+        /* 黄煜涵：面板默认隐藏，只有选中项显示 */
+        .hyh_rank_panel { display: none; padding: 12px 20px 8px; column-gap: 24px; }
+        .hyh_rank_panel.hyh_is_active { display: flex; }
+
+        /* 黄煜涵：左右两列排行榜 */
+        .hyh_rank_list {
+            flex: 1 1 0;
+            margin: 0;
+            padding: 0;
+            list-style: none;
+        }
+
+        .hyh_rank_item {
+            display: flex;
+            align-items: center;
+            height: 40px;
+            font-size: 14px;
+            color: #333333;
+        }
+
+        /* 黄煜涵：名次徽章，灰色方块 */
+        .hyh_rank_num {
+            display: inline-block;
+            width: 18px;
+            height: 18px;
+            margin-right: 9px;
+            color: #ffffff;
+            background: #cccccc;
+            border-radius: 2px;
+            font-size: 12px;
+            line-height: 18px;
+            text-align: center;
+        }
+
+        /* 黄煜涵：前三名徽章为红色 */
+        .hyh_rank_num.hyh_rank_num_top { background: #d33a32; }
+
+        .hyh_rank_name {
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+    </style>
+</head>
+<body>
+    <!-- 黄煜涵：排行榜组件容器，data-hyh-rank 用于 JS 自动初始化 -->
+    <div class="hyh_rank_box" data-hyh-rank>
+        <div class="hyh_rank_tabs" role="tablist">
+            <button class="hyh_rank_tab hyh_is_active" type="button" role="tab" data-hyh-tab="daily">每日</button>
+            <button class="hyh_rank_tab" type="button" role="tab" data-hyh-tab="weekly">每周</button>
+            <button class="hyh_rank_tab" type="button" role="tab" data-hyh-tab="monthly">每月</button>
+            <button class="hyh_rank_tab" type="button" role="tab" data-hyh-tab="all">全部</button>
+        </div>
+        <div class="hyh_rank_panels"></div>
+    </div>
+
+    <script src="./js/hyh_rank.js"></script>
+</body>
+</html>
