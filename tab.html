@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<!--
+  作者：黄煜涵
+  建立时间：2026-11-04
+  使用大模型：DeepSeek-V4.1-Flash
+  功能名称：新闻频道 Tab 选项卡
+-->
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>新闻频道 · Tab 选项卡</title>
+    <style>
+        :root {
+            --hyh_ink: #1f2933;
+            --hyh_muted: #68737d;
+            --hyh_line: #e7e0d3;
+            --hyh_paper: #fffdf8;
+            --hyh_accent: #e76f51;
+            --hyh_teal: #267d7d;
+            --hyh_shadow: 0 16px 40px rgba(52, 42, 30, .10);
+        }
+
+        * { box-sizing: border-box; }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            padding: 56px 20px;
+            color: var(--hyh_ink);
+            background:
+                radial-gradient(circle at 12% 0%, rgba(244, 201, 93, .22), transparent 26rem),
+                linear-gradient(135deg, #f7f1e7 0%, #fffdf8 56%, #eef4ee 100%);
+            font-family: "Microsoft YaHei", "PingFang SC", sans-serif;
+            line-height: 1.65;
+        }
+
+        .hyh_shell {
+            width: min(960px, 100%);
+            margin: 0 auto;
+        }
+
+        .hyh_topbar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+            margin-bottom: 18px;
+        }
+
+        .hyh_home_link {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 8px 16px;
+            color: var(--hyh_ink);
+            background: rgba(255, 253, 248, .8);
+            border: 1px solid var(--hyh_line);
+            border-radius: 999px;
+            font-size: .88rem;
+            font-weight: 700;
+            text-decoration: none;
+            transition: transform .2s ease, box-shadow .2s ease;
+        }
+
+        .hyh_home_link:hover,
+        .hyh_home_link:focus-visible {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 18px rgba(31, 41, 51, .12);
+            outline: none;
+        }
+
+        .hyh_page_title {
+            margin: 0 0 24px;
+            font-family: Georgia, "Times New Roman", serif;
+            font-size: clamp(1.8rem, 4vw, 2.6rem);
+            letter-spacing: -.02em;
+        }
+
+        .hyh_page_title span { color: var(--hyh_accent); }
+
+        .hyh_tabs {
+            background: rgba(255, 253, 248, .86);
+            border: 1px solid rgba(231, 224, 211, .9);
+            border-radius: 6px;
+            box-shadow: var(--hyh_shadow);
+            overflow: hidden;
+        }
+
+        .hyh_tab_bar {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4px;
+            padding: 10px;
+            background: #f4eee2;
+            border-bottom: 1px solid var(--hyh_line);
+        }
+
+        .hyh_tab {
+            padding: 10px 22px;
+            color: var(--hyh_muted);
+            background: transparent;
+            border: 1px solid transparent;
+            border-radius: 4px;
+            font-family: inherit;
+            font-size: .95rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: color .2s ease, background .2s ease, border-color .2s ease;
+        }
+
+        .hyh_tab:hover { color: var(--hyh_ink); background: rgba(255, 255, 255, .6); }
+
+        .hyh_tab:focus-visible { outline: 2px solid var(--hyh_teal); outline-offset: 2px; }
+
+        .hyh_tab.hyh_is_active {
+            color: #fff;
+            background: var(--hyh_accent);
+            border-color: var(--hyh_accent);
+        }
+
+        .hyh_panels { padding: 26px 28px 30px; }
+
+        .hyh_panel { display: none; }
+
+        .hyh_panel.hyh_is_active { display: block; }
+
+        .hyh_panel_title {
+            margin: 0 0 4px;
+            font-size: 1.28rem;
+        }
+
+        .hyh_panel_note {
+            margin: 0 0 18px;
+            color: var(--hyh_muted);
+            font-size: .86rem;
+        }
+
+        .hyh_news_list {
+            margin: 0;
+            padding: 0;
+            list-style: none;
+        }
+
+        .hyh_news_list li {
+            display: flex;
+            align-items: baseline;
+            gap: 12px;
+            padding: 12px 0;
+            border-bottom: 1px dashed var(--hyh_line);
+            font-size: .96rem;
+        }
+
+        .hyh_news_list li:last-child { border-bottom: none; }
+
+        .hyh_news_tag {
+            flex: none;
+            padding: 2px 9px;
+            color: var(--hyh_teal);
+            background: rgba(38, 125, 125, .1);
+            border-radius: 999px;
+            font-size: .74rem;
+            font-weight: 700;
+        }
+
+        .hyh_news_hot { color: var(--hyh_accent); font-weight: 700; }
+
+        @media (max-width: 640px) {
+            body { padding: 32px 14px; }
+            .hyh_tab { flex: 1 1 45%; padding: 10px 12px; }
+            .hyh_panels { padding: 20px 18px 24px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="hyh_shell">
+        <div class="hyh_topbar">
+            <p class="hyh_panel_note" style="margin:0;">课堂练习 · 选项卡组件</p>
+            <a class="hyh_home_link" href="./index.html">🏠 返回首页</a>
+        </div>
+
+        <h1 class="hyh_page_title">新闻频道 <span>/ Tab 选项卡</span></h1>
+
+        <div class="hyh_tabs" data-hyh-tabs>
+            <div class="hyh_tab_bar" role="tablist" aria-label="新闻分类">
+                <button class="hyh_tab" type="button" role="tab" data-hyh-tab="domestic" data-hyh-default="true" aria-selected="true">国内新闻</button>
+                <button class="hyh_tab" type="button" role="tab" data-hyh-tab="provincial" aria-selected="false">省内新闻</button>
+                <button class="hyh_tab" type="button" role="tab" data-hyh-tab="international" aria-selected="false">国际新闻</button>
+                <button class="hyh_tab" type="button" role="tab" data-hyh-tab="hottest" aria-selected="false">最热新闻</button>
+            </div>
+
+            <div class="hyh_panels">
+                <section class="hyh_panel" role="tabpanel" data-hyh-panel="domestic">
+                    <h2 class="hyh_panel_title">国内新闻</h2>
+                    <p class="hyh_panel_note">默认展示 · 聚焦国内时政与民生动态</p>
+                    <ul class="hyh_news_list">
+                        <li><span class="hyh_news_tag">要闻</span>全国多地推进城市更新，老旧小区改造进入提速阶段</li>
+                        <li><span class="hyh_news_tag">科技</span>国产大模型应用加速落地，制造业智能化改造需求上升</li>
+                        <li><span class="hyh_news_tag">民生</span>多所高校公布秋季学期实践课程安排，强调动手能力培养</li>
+                        <li><span class="hyh_news_tag">交通</span>假期出行高峰将至，铁路部门加开多趟临时旅客列车</li>
+                    </ul>
+                </section>
+
+                <section class="hyh_panel" role="tabpanel" data-hyh-panel="provincial">
+                    <h2 class="hyh_panel_title">省内新闻</h2>
+                    <p class="hyh_panel_note">省内各地市新闻与政策动向</p>
+                    <ul class="hyh_news_list">
+                        <li><span class="hyh_news_tag">教育</span>省内职业院校新增数字媒体方向专业，对接本地产业需求</li>
+                        <li><span class="hyh_news_tag">农业</span>秋收进度过半，多地启用智能农机提高作业效率</li>
+                        <li><span class="hyh_news_tag">文旅</span>秋季旅游线路发布，山地与湿地景区推出联票优惠</li>
+                        <li><span class="hyh_news_tag">城建</span>城市轨道交通新线进入联调联试阶段</li>
+                    </ul>
+                </section>
+
+                <section class="hyh_panel" role="tabpanel" data-hyh-panel="international">
+                    <h2 class="hyh_panel_title">国际新闻</h2>
+                    <p class="hyh_panel_note">全球视野 · 国际要闻速览</p>
+                    <ul class="hyh_news_list">
+                        <li><span class="hyh_news_tag">经济</span>多国央行释放信号，市场关注下一阶段利率走向</li>
+                        <li><span class="hyh_news_tag">科技</span>国际芯片产业链调整，先进封装产能持续扩张</li>
+                        <li><span class="hyh_news_tag">气候</span>极端天气频发，多国加强沿海城市防洪设施建设</li>
+                        <li><span class="hyh_news_tag">体育</span>国际赛事进入淘汰赛阶段，多支队伍上演逆转</li>
+                    </ul>
+                </section>
+
+                <section class="hyh_panel" role="tabpanel" data-hyh-panel="hottest">
+                    <h2 class="hyh_panel_title hyh_news_hot">最热新闻</h2>
+                    <p class="hyh_panel_note">按热度排序 · 今日讨论度最高的条目</p>
+                    <ul class="hyh_news_list">
+                        <li><span class="hyh_news_tag">TOP 1</span>国产动画电影票房刷新纪录，社交平台讨论量持续攀升</li>
+                        <li><span class="hyh_news_tag">TOP 2</span>高校秋季招聘会启动，数字媒体岗位报名人数居前</li>
+                        <li><span class="hyh_news_tag">TOP 3</span>城市公园夜跑活动走红，带动周边消费增长</li>
+                        <li><span class="hyh_news_tag">TOP 4</span>新款折叠屏设备发布，轻薄与续航成为讨论焦点</li>
+                    </ul>
+                </section>
+            </div>
+        </div>
+    </div>
+
+    <script src="./js/hyh_tab.js"></script>
+</body>
+</html>

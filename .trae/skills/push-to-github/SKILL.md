@@ -37,6 +37,13 @@ description: 将当前项目全部变更 git add、commit 并 force push 到 htt
    若远程默认分支为 main 而本地分支为 master，改用 `git push --force -u origin HEAD:main`。
 7. 验证：`git status` 显示分支与 origin 同步、`git log --oneline -1` 显示刚才的提交，即推送成功。
 
+## 项目规范（新建或修改页面时必须遵守）
+
+1. 所有 CSS 类名、CSS 变量名、HTML id、JS 变量一律以 `hyh_` 开头，例如 `hyh_ink`、`--hyh_shell`、`hyh_tabs`。
+2. `index.html` 是更早的页面，不要求回溯遵循命名前缀；其余新代码一律遵循。
+3. 每个新建 HTML 页面必须在 `index.html` 中加入超链接入口，使用相对路径指向该页面。
+4. 新建 HTML 需在 `<!DOCTYPE>` 后写注释块：作者（黄煜涵）、建立时间、使用大模型、功能名称；每个 JS 函数上方用中文注释说明主要功能。
+
 ## 约束
 
 - 远程地址固定为 `ssh://git@ssh.github.com:443/hyh-24/hyh.git`。`git@github.com:...` 形式走 22 端口会连接失败，HTTPS 不可用。
